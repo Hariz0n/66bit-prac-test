@@ -1,3 +1,22 @@
+import { useGetEmployeeList } from "@/entities/Employee";
+import { Button } from "@/shared";
+import { Link } from "@tanstack/react-router";
+
 export const MainPage = () => {
-  return <div>MainPage</div>
-}
+  const { data } = useGetEmployeeList();
+
+  if (!data) return;
+
+  return (
+    <div>
+      {data.map((empl) => (
+        <div>
+          {empl.name}
+          <Button asChild>
+            <Link to="/$employeeId" params={{ employeeId: empl.id.toString() }} />
+          </Button>
+        </div>
+      ))}
+    </div>
+  );
+};
