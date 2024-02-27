@@ -3,14 +3,14 @@ import { Button } from "@/shared";
 import { Link } from "@tanstack/react-router";
 
 export const MainPage = () => {
-  const { data } = useGetEmployeeList();
+  const { data } = useGetEmployeeList({Count: '100'});
 
   if (!data) return;
 
   return (
     <div>
       {data.map((empl) => (
-        <div>
+        <div key={empl.id}>
           {empl.name}
           <Button asChild>
             <Link to="/$employeeId" params={{ employeeId: empl.id.toString() }} />

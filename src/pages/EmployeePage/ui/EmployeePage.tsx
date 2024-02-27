@@ -1,4 +1,6 @@
 import { useGetEmployee } from "@/entities/Employee";
+import { EmployeeContacts } from "@/widgets/EmployeeContacts";
+import { EmployeeInfo } from "@/widgets/EmployeeInfo";
 import { getRouteApi } from "@tanstack/react-router"
 
 export const EmployeePage = () => {
@@ -9,5 +11,9 @@ export const EmployeePage = () => {
 
   if (!data) return <main>not found</main>
 
-  return <main>{data.name}</main>
+  return <main className="flex flex-col gap-5">
+    <EmployeeInfo name={data.name} photo={data.photo} position={data.position} stack={data.stack} />
+    <div className="border-b border-[#f2f2f2] " />
+    <EmployeeContacts phone={data.phone} birthdate={data.birthdate} dateOfEmployment={data.dateOfEmployment} />
+  </main>
 }
