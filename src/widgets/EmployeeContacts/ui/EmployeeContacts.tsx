@@ -6,8 +6,6 @@ export const EmployeeContacts = (
     "phone" | "birthdate" | "dateOfEmployment"
   >
 ) => {
-  console.log(contacts);
-
   return (
     <section className="container flex flex-col gap-4 md:gap-8">
       <h2 className="text-[1rem] md:text-[2rem] font-semibold leading-[19px] md:leading-[38px]">

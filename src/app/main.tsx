@@ -4,51 +4,59 @@ import "./index.css";
 import {
   Outlet,
   RouterProvider,
-  createRootRoute,
   createRoute,
   createRouter,
 } from "@tanstack/react-router";
-import { MainPage } from "@/pages/MainPage";
-import { Header } from "@/widgets/Header";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/shared";
-import { EmployeePage } from "@/pages/EmployeePage";
+import { ThemeProvider, queryClient, rootRoute } from "@/shared";
+import { mainRoute } from "@/pages/MainPage/lib/mainRoute";
+import {
+  employeeIdRoute,
+  employeeRoute,
+} from "@/pages/EmployeePage/lib/employeeRoute";
+import { Header } from "@/widgets/Header";
+import { Breadcrumbs } from "@/widgets/Breadcrumbs";
 
-const rootRoute = createRootRoute({
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+export const globalLayout = createRoute({
+  getParentRoute: () => rootRoute,
+  id: "globalLayout",
   component: () => (
     <>
       <Header />
+      <Breadcrumbs />
       <Outlet />
     </>
   ),
 });
 
-const mainRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/",
-  component: MainPage,
+const routeTree = rootRoute.addChildren([
+  globalLayout.addChildren([
+    mainRoute,
+    employeeRoute.addChildren([employeeIdRoute]),
+  ]),
+]);
+
+const router = createRouter({
+  routeTree,
+  context: {
+    queryClient,
+    title: "Главная",
+    path: "/",
+  },
 });
-
-const employeeRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/$employeeId",
-  component: EmployeePage
-})
-
-const routeTree = rootRoute.addChildren([mainRoute, employeeRoute]);
-
-const router = createRouter({ routeTree });
-
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router
-  }
-}
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );

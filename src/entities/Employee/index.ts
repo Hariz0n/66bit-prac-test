@@ -5,3 +5,6 @@ export { useGetEmployeeList } from "./utils/useGetEmployeeList";
 // Types
 export type { EmployeeListRequestDto } from "./model/EmployeeListRequestDto";
 export type { EmployeeResponseDto } from "./model/EmployeeResponseDto";
+
+// UI
+export { EmployeesListContext, EmployeesListContextWrapper } from "./ui/EmployeesListContext";
